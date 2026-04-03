@@ -183,15 +183,29 @@ export const generateAtsResume = async (resumeData) => {
   if (openai) {
     try {
       const prompt = `
-You are an expert resume writer and ATS optimization system.
-Rewrite the following raw user input into a perfectly formatted, ATS-compliant structure.
-Maintain spacing, replace weak verbs with action verbs, and add placeholder metrics (like [X]%) if none exist.
+You are an expert ATS resume writer and recruiter-level evaluator.
+Your job is to generate highly optimized, ATS-friendly resumes tailored to a specific job description.
+
+STRICT RULES:
+- Output must be ATS-safe (single-column, no tables, no icons, no graphics)
+- Use clear section headings: Contact, Summary, Skills, Projects, Education, Certifications
+- Use bullet points with measurable impact (numbers, metrics, results)
+- Inject relevant keywords from the job description naturally
+- Avoid hallucinations (do NOT invent experience or skills not provided)
+- Keep language concise, professional, and achievement-focused
+- Ensure formatting works for ATS parsers (like Workday, Taleo)
+
+STYLE RULES:
+- Strong action verbs (Built, Developed, Optimized, Led)
+- Each bullet must show impact (e.g., "Improved X by 30%")
+- No long paragraphs
+- No fancy formatting
 
 raw input:
-${JSON.stringify(resumeData)}
+\${JSON.stringify(resumeData)}
 
 OUTPUT FORMAT:
-Return a JSON object exactly matching the input keys (personalInfo, experience, education, projects, skills, certifications, achievements) but with the text contents rewritten to be highly professional, impactful, and ATS friendly. Keep the values as strings with line breaks. Do not include markdown formatting like \`\`\`json.
+Return a JSON object exactly matching the input keys (personalInfo, experience, education, projects, skills, certifications, achievements) but with the text contents rewritten to be highly professional, impactful, and ATS friendly. Keep the values as strings with line breaks. Do not include markdown formatting like \`\`\`json. Return ONLY clean structured JSON (no explanations).
 `;
       const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
