@@ -157,7 +157,7 @@ export default function AnalyzerFlow() {
                     <h3 className="text-base font-semibold text-slate-800">Target Job Description</h3>
                   </div>
                   <div className="p-6 bg-white/80 rounded-b-2xl text-sm custom-scrollbar flex-1" style={{maxHeight: '400px', overflowY: 'auto', whiteSpace: 'pre-wrap', lineHeight: '1.7', color: '#1f2937'}}>
-                    <HighlightedText text={jdText} keywords={results.missing} highlightClass="bg-red-100 text-red-700 font-bold px-1 rounded-sm" />
+                    <HighlightedText text={jdText} keywords={results.missing_keywords || []} highlightClass="bg-red-100 text-red-700 font-bold px-1 rounded-sm" />
                   </div>
                 </div>
               )}

@@ -5,7 +5,7 @@ const require = createRequire(import.meta.url);
 const pdf = require('pdf-parse');
 import mammoth from 'mammoth';
 import Resume from '../models/Resume.js';
-import { analyzeResumeContent, improveBullet, generateAtsResume } from '../services/scoringEngine.js';
+import { analyzeResumeContent, improveBullet, generateAtsResume, recruiterReview, gapAnalysis } from '../services/scoringEngine.js';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -44,14 +44,26 @@ router.post('/analyze', async (req, res) => {
       return res.status(400).json({ error: 'Resume text is required' });
     }
 
-    const analysis = analyzeResumeContent(text, jdText);
+    // Execute the parallel steps of the AI pipeline
+    const [atsAnalysis, recruiterDecision, gapAnalysisMap] = await Promise.all([
+      analyzeResumeContent(text, jdText),
+      recruiterReview(text),
+      gapAnalysis(text, jdText)
+    ]);
+
+    const combinedAnalysis = {
+      type: jdText ? 'job' : 'general',
+      ...atsAnalysis,
+      recruiter: recruiterDecision,
+      gap: gapAnalysisMap
+    };
 
     if (userId) {
-      let doc = new Resume({ userId, text, lastAnalysis: analysis });
+      let doc = new Resume({ userId, text, lastAnalysis: combinedAnalysis });
       await doc.save();
     }
 
-    res.json(analysis);
+    res.json(combinedAnalysis);
   } catch (err) {
     console.error('Error analyzing text:', err);
     res.status(500).json({ error: 'Failed to analyze resume' });

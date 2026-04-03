@@ -15,7 +15,7 @@ export default function ChooseStart({ onSelect }) {
         
         {/* General Check Card */}
         <div 
-          className="selector-card flex flex-col items-start"
+          className="selector-card flex flex-col items-start cursor-pointer hover:-translate-y-1 transition-all hover:shadow-lg hover:ring-2 hover:ring-blue-100 rounded-xl"
           onClick={() => onSelect('general')}
         >
           <div className="bg-blue-50 p-4 rounded-xl mb-4 border border-blue-100" style={{ backgroundColor: '#eff6ff' }}>
@@ -29,7 +29,7 @@ export default function ChooseStart({ onSelect }) {
 
         {/* Tailor to Job Description Card */}
         <div 
-          className="selector-card flex flex-col items-start"
+          className="selector-card flex flex-col items-start cursor-pointer hover:-translate-y-1 transition-all hover:shadow-lg hover:ring-2 hover:ring-blue-100 rounded-xl"
           onClick={() => onSelect('upload')}
         >
           <div className="bg-gray-50 p-4 rounded-xl mb-4 border border-gray-200">
@@ -43,7 +43,7 @@ export default function ChooseStart({ onSelect }) {
 
         {/* Build From Scratch Card */}
         <div 
-          className="selector-card flex flex-col items-start"
+          className="selector-card flex flex-col items-start cursor-pointer hover:-translate-y-1 transition-all hover:shadow-lg hover:ring-2 hover:ring-blue-100 rounded-xl"
           onClick={() => onSelect('build')}
         >
           <div className="bg-gray-50 p-4 rounded-xl mb-4 border border-gray-200">
