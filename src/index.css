@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --bg-dark: #f8fafc;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased min-h-screen text-[15px];
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold text-[0.95rem] transition-all;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-500 text-white shadow-md hover:bg-blue-600 hover:-translate-y-[1px] disabled:bg-blue-300 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none;
+  }
+  
+  .btn.outline {
+    @apply bg-transparent border border-slate-300 text-slate-900 hover:bg-slate-100;
+  }
+
+  .card {
+    @apply bg-white border border-slate-200 rounded-2xl shadow-lg flex flex-col;
+  }
+  
+  .card-header {
+    @apply p-5 border-b border-slate-100 flex items-center justify-between;
+  }
+  
+  .card-title {
+    @apply flex items-center text-lg font-semibold text-slate-900 m-0 tracking-tight;
+  }
+  
+  .card-body {
+    @apply p-6 flex-1 flex flex-col;
+  }
+
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+  
+  .glass-card {
+    @apply bg-white/60 backdrop-blur-lg border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl;
+  }
+  
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  
+  .flex-center-y {
+    @apply flex items-center;
+  }
+  
+  .text-main {
+    @apply text-slate-900;
+  }
+  
+  .text-muted {
+    @apply text-slate-500;
+  }
+}
+
+/* Animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.slide-up { animation: slideUp 0.4s ease-out forwards; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in { animation: fadeIn 0.3s ease-out forwards; }
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Dashboard Score */
+.score-circle-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+.score-circle-bg {
+  fill: none;
+  stroke: #e2e8f0;
+  stroke-width: 8;
+}
+.score-circle-progress {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1s ease-out;
+}
+.score-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+/* Highlight components */
+.highlight-text {
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+}
+.highlight-match {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #059669;
+}
+.highlight-miss {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #e11d48;
+}

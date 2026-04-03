@@ -1,0 +1,46 @@
+{
+  "name": "rezzoom",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "vite",
+    "start:backend": "nodemon backend/server.js",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
+    "autoprefixer": "^10.4.27",
+    "axios": "^1.14.0",
+    "bcryptjs": "^3.0.3",
+    "clsx": "^2.1.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.0",
+    "express": "^5.2.1",
+    "framer-motion": "^12.38.0",
+    "html2pdf.js": "^0.10.1",
+    "jsonwebtoken": "^9.0.3",
+    "lucide-react": "^0.344.0",
+    "mammoth": "^1.12.0",
+    "mongoose": "^9.3.3",
+    "multer": "^2.1.1",
+    "openai": "^6.33.0",
+    "pdf-parse": "^2.4.5",
+    "postcss": "^8.5.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.13.2",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.14",
+    "vite": "^5.1.0"
+  }
+}
