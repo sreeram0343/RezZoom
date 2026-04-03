@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start": "node backend/server.js",
     "start:frontend": "vite",
     "start:backend": "nodemon backend/server.js",
     "build": "vite build",
