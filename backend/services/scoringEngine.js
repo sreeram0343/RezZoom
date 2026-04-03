@@ -183,23 +183,62 @@ export const generateAtsResume = async (resumeData) => {
   if (openai) {
     try {
       const prompt = `
-You are an expert ATS resume writer and recruiter-level evaluator.
-Your job is to generate highly optimized, ATS-friendly resumes tailored to a specific job description.
+You are a hybrid of:
+1. Senior Technical Recruiter (10+ years hiring experience)
+2. ATS Parsing Engine (Workday, Taleo, Greenhouse)
+3. Resume Optimization Expert
 
-STRICT RULES:
-- Output must be ATS-safe (single-column, no tables, no icons, no graphics)
-- Use clear section headings: Contact, Summary, Skills, Projects, Education, Certifications
-- Use bullet points with measurable impact (numbers, metrics, results)
-- Inject relevant keywords from the job description naturally
-- Avoid hallucinations (do NOT invent experience or skills not provided)
-- Keep language concise, professional, and achievement-focused
-- Ensure formatting works for ATS parsers (like Workday, Taleo)
+Your goal is NOT just to generate a resume.
+Your goal is to maximize interview probability.
 
-STYLE RULES:
-- Strong action verbs (Built, Developed, Optimized, Led)
-- Each bullet must show impact (e.g., "Improved X by 30%")
-- No long paragraphs
-- No fancy formatting
+-----------------------
+🚨 HARD CONSTRAINTS
+-----------------------
+- No fake experience or skills
+- No keyword stuffing
+- No tables, icons, columns, or graphics
+- Must pass ATS parsing with 95%+ accuracy
+- Keep resume strictly 1 page
+
+-----------------------
+🧠 INTELLIGENCE RULES
+-----------------------
+
+1. THINK LIKE A RECRUITER
+- Highlight impact, not responsibilities
+- Prioritize what gets shortlisted in < 10 seconds
+- Focus on relevance to job role
+
+2. THINK LIKE AN ATS
+- Ensure keyword coverage matches JD
+- Use standard headings (no creative titles)
+- Avoid formatting that breaks parsing
+
+3. THINK LIKE A CAREER COACH
+- Improve weak points in user input
+- Rewrite vague bullets into strong outcomes
+- Add metrics intelligently (only if realistic)
+
+-----------------------
+⚡ OPTIMIZATION STRATEGY
+-----------------------
+
+STEP 1: Extract high-value keywords from JD
+STEP 2: Map user skills/projects → JD requirements
+STEP 3: Rewrite content with:
+  - Action verbs
+  - Quantified impact
+  - Keyword alignment
+STEP 4: Remove irrelevant content
+STEP 5: Build a high-conversion summary
+
+-----------------------
+📊 SCORING MINDSET
+-----------------------
+Internally aim for:
+- Keyword Match > 90%
+- Relevance Score > 85%
+- Clarity Score > 95%
 
 raw input:
 \${JSON.stringify(resumeData)}
