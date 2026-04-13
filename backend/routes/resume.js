@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { PDFParse } = require('pdf-parse');
+const pdfParse = require('pdf-parse');
 import mammoth from 'mammoth';
 import Resume from '../models/Resume.js';
 import { analyzeResumeContent, improveBullet, generateAtsResume, recruiterReview, gapAnalysis } from '../services/scoringEngine.js';
@@ -20,10 +20,8 @@ router.post('/upload-resume', upload.single('resume'), async (req, res) => {
     const fileBuffer = req.file.buffer;
 
     if (req.file.mimetype === 'application/pdf') {
-       const parser = new PDFParse({ data: fileBuffer });
-       const result = await parser.getText();
-       extractedText = result.text;
-       await parser.destroy();
+       const data = await pdfParse(fileBuffer);
+       extractedText = data.text;
     } else if (req.file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
       const data = await mammoth.extractRawText({ buffer: fileBuffer });
       extractedText = data.value;
