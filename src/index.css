@@ -1,10 +1,16 @@
 @import "tailwindcss";
 
+@theme {
+  --color-slate-50: #EDF1F5;
+  --color-blue-500: #0145F2;
+  --color-blue-600: #0138c6;
+}
+
 @layer base {
   :root {
-    --primary: #3b82f6;
-    --primary-hover: #2563eb;
-    --bg-dark: #f8fafc;
+    --primary: #0145F2;
+    --primary-hover: #0138c6;
+    --bg-dark: #EDF1F5;
     --text-main: #0f172a;
     --text-muted: #64748b;
     --border-color: #e2e8f0;
