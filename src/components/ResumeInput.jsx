@@ -7,6 +7,7 @@ export default function ResumeInput({ onResumeSubmit }) {
   const [submitted, setSubmitted] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isExtracting, setIsExtracting] = useState(false);
+  const [isSlowExtract, setIsSlowExtract] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleProcess = () => {
@@ -23,6 +24,9 @@ export default function ResumeInput({ onResumeSubmit }) {
     }
     
     setIsExtracting(true);
+    setIsSlowExtract(false);
+    const slowTimer = setTimeout(() => setIsSlowExtract(true), 5000);
+    
     try {
       const formData = new FormData();
       formData.append('resume', file);
@@ -34,13 +38,16 @@ export default function ResumeInput({ onResumeSubmit }) {
         }
       });
       
+      clearTimeout(slowTimer);
       setText(response.data.text);
       setSubmitted(false);
     } catch (err) {
+      clearTimeout(slowTimer);
       console.error(err);
       alert('Error extracting text from file. Please paste manually.');
     } finally {
       setIsExtracting(false);
+      clearTimeout(slowTimer);
     }
   };
 
@@ -75,6 +82,12 @@ export default function ResumeInput({ onResumeSubmit }) {
               <div className="flex-center flex-col">
                 <div className="w-8 h-8 rounded-full border-4 border-blue-500 border-t-transparent animate-spin mb-4"></div>
                 <p className="text-blue-600 text-sm font-medium">Extracting text via Backend...</p>
+                {isSlowExtract && (
+                  <div className="mt-4 bg-amber-50 border border-amber-200 text-amber-700 p-3 rounded-lg max-w-xs text-center shadow-sm">
+                    <p className="font-semibold mb-1 text-xs">Waking up the server ☕</p>
+                    <p className="text-xs">First-time free tier requests can take up to 50 seconds to process.</p>
+                  </div>
+                )}
               </div>
             ) : (
               <>

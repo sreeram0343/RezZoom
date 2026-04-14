@@ -35,6 +35,7 @@ export default function AnalyzerFlow() {
   const [resumeText, setResumeText] = useState('');
   const [jdText, setJdText] = useState('');
   const [results, setResults] = useState(null);
+  const [isSlowResponse, setIsSlowResponse] = useState(false);
 
   const handleModeSelect = (selectedMode) => {
     // Treat 'build' as taking to builder, but here we process 'job' vs 'general' uploads
@@ -62,15 +63,21 @@ export default function AnalyzerFlow() {
     const finalResumeText = typeof overrideResumeText === 'string' ? overrideResumeText : resumeText;
     setResumeText(finalResumeText);
     setStep('analyze');
+    setIsSlowResponse(false);
+    
+    // Timer to alert the user of Render free tier cold starts
+    const slowTimer = setTimeout(() => setIsSlowResponse(true), 5000);
     
     try {
       const response = await apiClient.post('/resume/analyze', {
         text: finalResumeText,
         jdText: mode === 'general' ? '' : jdText
       });
+      clearTimeout(slowTimer);
       setResults(response.data);
       setStep('results');
     } catch (err) {
+      clearTimeout(slowTimer);
       console.error('Error analyzing resume:', err);
       // Fallback or error handling UI could be here
       alert('Failed to analyze resume. Check backend connection.');
@@ -129,7 +136,13 @@ export default function AnalyzerFlow() {
           <motion.div key="analyze" className="flex-center flex-col py-32" variants={pageVariants} initial="initial" animate="animate" exit="exit">
             <div className="w-16 h-16 rounded-full border-4 border-blue-500 border-t-transparent animate-spin mb-6 drop-shadow-md"></div>
             <h2 className="text-2xl font-bold mb-2 text-slate-800">Analyzing Content...</h2>
-            <p className="text-slate-500 text-lg animate-pulse">Running ATS heuristic matching models</p>
+            <p className="text-slate-500 text-lg animate-pulse mb-6">Running ATS heuristic matching models</p>
+            {isSlowResponse && (
+               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-amber-50 border border-amber-200 text-amber-700 p-4 rounded-xl max-w-sm text-center shadow-sm">
+                 <p className="font-semibold mb-1 text-amber-800">Waking up the AI Engine ☕</p>
+                 <p className="text-sm">Since we are using a free tier, the backend may take up to 50 seconds to spin up from sleep. Hang tight!</p>
+               </motion.div>
+            )}
           </motion.div>
         )}
 
