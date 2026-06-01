@@ -57,7 +57,7 @@ export function EducationForm() {
 
       <div className="space-y-4">
         <AnimatePresence>
-          {education.map((item, index) => (
+          {education.map((item) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, height: 0 }}

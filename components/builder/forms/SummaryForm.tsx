@@ -21,7 +21,7 @@ export function SummaryForm() {
         summary: "Results-driven Software Engineer with 5+ years of experience architecting scalable web applications. Proven track record in reducing API latency by 40% and leading cross-functional teams to deliver critical product features ahead of schedule. Passionate about building robust backend systems and mentoring junior developers.",
       });
       toast.success("Summary generated successfully!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to generate summary.");
     } finally {
       setIsGenerating(false);

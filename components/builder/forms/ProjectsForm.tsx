@@ -115,7 +115,7 @@ export function ProjectsForm() {
 
       <div className="space-y-4">
         <AnimatePresence>
-          {projects.map((item, index) => (
+          {projects.map((item) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, height: 0 }}
@@ -248,7 +248,7 @@ export function ProjectsForm() {
                         </Button>
                       </div>
 
-                      {item.bullets.map((bullet, bIndex) => (
+                      {item.bullets.map((bullet) => (
                         <div key={bullet.id} className="flex gap-2 items-start relative group">
                           <div className="mt-3 cursor-grab text-neutral-400">
                             <GripVertical className="w-4 h-4" />
@@ -292,7 +292,7 @@ export function ProjectsForm() {
 
         {projects.length === 0 && (
           <div className="text-center p-12 border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl">
-             <p className="text-neutral-500 mb-4">You haven't added any projects yet.</p>
+             <p className="text-neutral-500 mb-4">You haven&apos;t added any projects yet.</p>
              <Button onClick={addProject}>
                <Plus className="w-4 h-4 mr-2" /> Add Project
              </Button>
@@ -302,3 +302,4 @@ export function ProjectsForm() {
     </div>
   );
 }
+

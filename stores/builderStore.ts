@@ -2,11 +2,11 @@ import { create } from "zustand";
 import { SectionKey } from "@/types/resume";
 
 interface BuilderState {
-  activeSection: SectionKey | "personalInfo";
+  activeSection: SectionKey | "personalInfo" | "settings";
   isPdfPreviewOpen: boolean;
   zoomLevel: number;
   
-  setActiveSection: (section: SectionKey | "personalInfo") => void;
+  setActiveSection: (section: SectionKey | "personalInfo" | "settings") => void;
   setPdfPreviewOpen: (isOpen: boolean) => void;
   setZoomLevel: (level: number) => void;
 }
