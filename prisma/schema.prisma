@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  name              String?
+  avatarUrl         String?
+  emailVerified     Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  resumes           Resume[]
+  jobApplications   JobApplication[]
+  chatSessions      ChatSession[]
+}
+
+model Resume {
+  id              String          @id @default(cuid())
+  userId          String
+  title           String          @default("Untitled Resume")
+  templateId      String          @default("minimal-ats")
+  status          ResumeStatus    @default(DRAFT)
+  content         Json            // ResumeContent type
+  customization   Json?           // TemplateCustomization type
+  atsScore        Int?
+  lastAtsAnalysis Json?           // ATSAnalysisResult type
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  versions        ResumeVersion[]
+  exports         ResumeExport[]
+  tailoredVersions TailoredResume[]
+  analytics       ResumeAnalytics?
+  @@index([userId])
+}
+
+model ResumeVersion {
+  id          String   @id @default(cuid())
+  resumeId    String
+  version     Int
+  content     Json     // Snapshot of ResumeContent
+  changeSummary String?
+  atsScore    Int?
+  createdAt   DateTime @default(now())
+  resume      Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  @@unique([resumeId, version])
+  @@index([resumeId])
+}
+
+model TailoredResume {
+  id              String   @id @default(cuid())
+  resumeId        String
+  jobTitle        String
+  company         String?
+  jobDescription  String
+  tailoredContent Json     // ResumeContent
+  matchScore      Int
+  missingSkills   String[]
+  missingKeywords String[]
+  createdAt       DateTime @default(now())
+  resume          Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+}
+
+model ResumeExport {
+  id          String       @id @default(cuid())
+  resumeId    String
+  format      ExportFormat
+  fileUrl     String?
+  createdAt   DateTime     @default(now())
+  resume      Resume       @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+}
+
+model ResumeAnalytics {
+  id              String   @id @default(cuid())
+  resumeId        String   @unique
+  viewCount       Int      @default(0)
+  exportCount     Int      @default(0)
+  tailorCount     Int      @default(0)
+  atsScoreHistory Json[]   // Array of {score, date}
+  resume          Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+}
+
+model JobApplication {
+  id             String   @id @default(cuid())
+  userId         String
+  company        String
+  role           String
+  jobDescription String?
+  matchScore     Int?
+  status         ApplicationStatus @default(SAVED)
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ChatSession {
+  id        String        @id @default(cuid())
+  userId    String
+  title     String?
+  messages  ChatMessage[]
+  createdAt DateTime      @default(now())
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  sessionId String
+  role      ChatRole
+  content   String
+  createdAt DateTime @default(now())
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+enum ResumeStatus {
+  DRAFT
+  COMPLETE
+  ARCHIVED
+}
+
+enum ExportFormat {
+  PDF
+  DOCX
+  JSON
+  TXT
+}
+
+enum ApplicationStatus {
+  SAVED
+  APPLIED
+  INTERVIEWING
+  OFFERED
+  REJECTED
+}
+
+enum ChatRole {
+  USER
+  ASSISTANT
+}
