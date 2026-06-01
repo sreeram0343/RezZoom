@@ -5,6 +5,12 @@ import { Suspense, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PersonalInfoForm } from "@/components/builder/forms/PersonalInfoForm";
+import { SummaryForm } from "@/components/builder/forms/SummaryForm";
+import { ExperienceForm } from "@/components/builder/forms/ExperienceForm";
+import { EducationForm } from "@/components/builder/forms/EducationForm";
+import { SkillsForm } from "@/components/builder/forms/SkillsForm";
+import { ProjectsForm } from "@/components/builder/forms/ProjectsForm";
 
 const STEPS = [
   "Personal Info",
@@ -47,6 +53,23 @@ function BuilderContent() {
   const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, STEPS.length - 1));
   const handlePrev = () => setCurrentStep(prev => Math.max(prev - 1, 0));
 
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 0: return <PersonalInfoForm />;
+      case 1: return <SummaryForm />;
+      case 2: return <ExperienceForm />;
+      case 3: return <EducationForm />;
+      case 4: return <SkillsForm />;
+      case 5: return <ProjectsForm />;
+      default:
+        return (
+          <div className="text-neutral-500 h-64 border-2 border-dashed border-neutral-200 rounded-xl flex items-center justify-center">
+            (Template selection will be implemented here)
+          </div>
+        );
+    }
+  };
+
   return (
     <div className="h-full flex flex-col max-w-4xl mx-auto p-4 md:p-8">
       {/* Progress Bar */}
@@ -77,9 +100,7 @@ function BuilderContent() {
             className="h-full"
           >
             <h2 className="text-2xl font-bold mb-6">{STEPS[currentStep]}</h2>
-            <div className="text-neutral-500 h-64 border-2 border-dashed border-neutral-200 rounded-xl flex items-center justify-center">
-              (Form fields for {STEPS[currentStep]} will be implemented here)
-            </div>
+            {renderStepContent()}
           </motion.div>
         </AnimatePresence>
       </div>
